@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>code runner</title>
+    <style>
+         body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background-image:url('quizzy.jpg');
+        background-size: cover;
+        background-position: center;
+        padding: 20px;
+        margin : 0;
+        color : rgb(11, 12, 14);
+         }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #9fbfe2;
+            background: #abbce9;
+            border-radius: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #007BFF;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #output {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            display: none;
+        }
+        pre {
+            background-color: #272822;
+            color: #f1f1f1;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h4>TRIVIA</h4>
+        <p>get your trivia on!!! &nbsp;
+        Choose the your fandom and get going mates</p>
+        <p>
+        FUN FACTS,BIG LAUGHS ;)
+        </p>
+        
+        <button onclick="runCode1()">AVENGERS</button>
+        <button onclick="runCode2()">HARRY POTTER</button>
+        <button onclick="runCode3()">DISNEY</button>
+
+        <div id="output"></div>
+    </div>
+
+    <script>
+        function runCode1() {
+            window.location.href ="file:///C:/Users/HP/OneDrive/Desktop/AVENGERS.html"; 
+        }
+
+
+        function runCode2() {
+            window.location.href ="file:///C:/Users/HP/OneDrive/Desktop/harrypotter.html"; 
+        }
+
+        function runCode3() {
+            window.location.href ="file:///C:/Users/HP/OneDrive/Desktop/disney.html";
+        }
+    </script>
+</body>
+</html>

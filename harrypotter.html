@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trivia Quiz</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;}
+        .quiz-container { max-width: 500px; margin: auto; padding: 20px; border: 1px solid #000000; background:hsla(0, 100%, 25%, 0.836); border-radius: 10px; }
+        .option { display: block; margin: 10px; padding: 10px; cursor: pointer; background: #ebac00; border-radius: 5px; }
+        .option:hover { background: #0c0c0c; }
+        .correct { background: #68a325 !important; }
+        .wrong { background: #ee0d0d !important; }
+        button:disabled { cursor: not-allowed; }
+    </style>
+</head>
+<body>
+    <video class="video-background" autoplay loop muted>
+        <source src="h2.mp4" type="video/mp4">
+    </video>
+    <div class="quiz-container">
+        <h2 id="question">Loading...</h2>
+        <div id="options"></div>
+        <input type="text" id="text-answer" style="display: none; margin-top: 10px; padding: 5px;">
+        <button id="next-btn" onclick="nextQuestion()" disabled>Next</button>
+        <p id="score">Score: 0</p>
+    </div>
+    
+    <script>
+        const quizData = [
+            { question: "Which wood is Voldemort's wand made from?", options: ["Oak", "Elder", "Yew", "Loki"], answer: "Yew" },
+            { question: "Name of the wizarding bank in Diagon Alley?", options: ["Gringotts", "Ollivanders", "Flourish and Blotts", "Zonko's"], answer: "Gringotts" },
+            { question: "Who said 'I am not worried,Harry.I am with you'?", options: ["Ron Weasley", "Severus Snape", "Albus Dumbledore", "Sirius Black"], answer: "Albus Dumbledore" },
+            { question: "What house is Harry Potter in?", options: ["Slytherin", "Gryffindor", "Hufflepuff", "Ravenclaw"], answer: "Gryffindor"},
+            { question: "Name of Hagrid's giant pet spider ?", options: ["Aragog","Fluffy","Acromantula","Shelob"], answer:"Aragog"},
+            { question: "What does the spell 'Lumos' do?", options: ["Opens doors","Conjures Fire","Makes objects levitate","Lights up the tip of a wand"], answer: "Lights up the tip of a wand" },
+            { question: "What is Hermione's Patronus?", options: ["Doe","Rabbit","Eagle","Otter"], answer: "Otter" },
+            { question: "Which of the following is 'NOT' one of the Deathly Hallows?", options: ["The Resurrection Stone","The Sorcerer's Stone","The Elder Wand","The Invisibility Cloak"], answer: "The Sorcerer's Stone" },
+            { question: "Most powerful magical number in Harry Potter", options: ["1","7","11","4"], answer: "7" },
+            { question: "Who killed Dobby the house-elf?", options: ["Bellatrix Lestrange","Lucius Malfoy","Wormtail","Ron Weasley"], answer:"Bellatrix Lestrange" }
+    ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            const quiz = quizData[currentQuestionIndex];
+            document.getElementById("question").innerText = quiz.question;
+            const optionsDiv = document.getElementById("options");
+            optionsDiv.innerHTML = "";
+                quiz.options.forEach(option => {
+                const button = document.createElement("button");
+                button.innerText = option;
+                button.classList.add("option");
+                button.onclick = () => checkAnswer(button, quiz.answer);
+                optionsDiv.appendChild(button);
+            });
+            document.getElementById("next-btn").disabled = true;
+        }
+
+        function checkAnswer(button, correctAnswer) {
+            document.querySelectorAll(".option").forEach(btn => btn.disabled = true);
+            if (button.innerText === correctAnswer) {
+                button.classList.add("correct");
+                score++;
+            } else {
+                button.classList.add("wrong");
+            }
+            document.getElementById("score").innerText = "Score: " + score;
+            document.getElementById("next-btn").disabled = false;
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < quizData.length) {
+                loadQuestion();
+            } else {
+                document.getElementById("question").innerText = "Trivia Over! Final Score: " + score;
+                document.getElementById("options").innerHTML = "";
+                document.getElementById("next-btn").style.display = "none";
+            }
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
+
+

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trivia Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background-image: url('d2.jpg'); /* Change this to your image file */
+            background-size: cover;
+            background-position: center;
+        }
+        .quiz-container {
+            max-width: 500px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #080808;
+            background: hsla(286, 50%, 77%, 0.836);
+            border-radius: 10px;
+        }
+        .option { display: block; margin: 10px; padding: 10px; cursor: pointer; background: #c043a5; border-radius: 5px; }
+        .option:hover { background: #0c0c0c; }
+        .correct { background: #68a325 !important; }
+        .wrong { background: #ee0d0d !important; }
+        button:disabled { cursor: not-allowed; }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h2 id="question">Loading...</h2>
+        <div id="options"></div>
+        <input type="text" id="text-answer" style="margin-top: 10px; padding: 5px; width: 80%; display: none;">
+        <button id="submit-btn" onclick="checkAnswer()">Submit</button>
+        <button id="next-btn" onclick="nextQuestion()" disabled>Next</button>
+        <p id="score">Score: 0</p>
+    </div>
+   
+    <script>
+        const quizData = [
+            { question: "Who is the first character that Alice encounters?", options: ["The White Rabbit", "The Mad Hatter", "The Cheshire Cat", "The Caterpillar"], answer: "The White Rabbit" },
+            { question: "What is the name of the iconic castle at Magic Kingdom?", answer: "Cinderella Castle" },
+            { question: "Bambi is?", options: ["Rabbit", "Fox", "Deer", "Bear"], answer: "Deer" },
+            { question: "Who's pet is Pascal?", answer: "Rapunzel" },
+            { question: "Who is the villain in Sleeping Beauty?", options: ["Lady Tremaine", "Maleficent", "Ursula", "Queen Grimhilde"], answer: "Maleficent" },
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            const quiz = quizData[currentQuestionIndex];
+            document.getElementById("question").innerText = quiz.question;
+            const optionsDiv = document.getElementById("options");
+            optionsDiv.innerHTML = "";
+            document.getElementById("text-answer").style.display = "none";
+            document.getElementById("submit-btn").style.display = "inline-block";
+            document.getElementById("next-btn").disabled = true;
+
+            if (quiz.options) {
+                quiz.options.forEach(option => {
+                    const button = document.createElement("button");
+                    button.innerText = option;
+                    button.classList.add("option");
+                    button.onclick = () => checkAnswer(button, quiz.answer);
+                    optionsDiv.appendChild(button);
+                });
+            } else {
+                document.getElementById("text-answer").style.display = "inline-block";
+            }
+        }
+
+        function checkAnswer(button, correctAnswer) {
+            if (button) {
+                // Disable all options after an answer is selected
+                document.querySelectorAll(".option").forEach(btn => btn.disabled = true);
+                if (button.innerText === correctAnswer) {
+                    button.classList.add("correct");
+                    score++;
+                } else {
+                    button.classList.add("wrong");
+                }
+            } else {
+                const userAnswer = document.getElementById("text-answer").value.trim();
+                if (userAnswer.toLowerCase() === quizData[currentQuestionIndex].answer.toLowerCase()) {
+                    score++;
+                    document.getElementById("text-answer").style.backgroundColor = "lightgreen";
+                } else {
+                    document.getElementById("text-answer").style.backgroundColor = "lightcoral";
+                }
+            }
+
+            document.getElementById("score").innerText = "Score: " + score;
+            document.getElementById("submit-btn").style.display = "none";  // Hide the submit button
+            document.getElementById("next-btn").disabled = false;  // Enable next button
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < quizData.length) {
+                document.getElementById("text-answer").style.backgroundColor = "white";
+                loadQuestion();
+            } else {
+                document.getElementById("question").innerText = "Trivia Over! Final Score: " + score;
+                document.getElementById("options").innerHTML = "";
+                document.getElementById("text-answer").style.display = "none";
+                document.getElementById("submit-btn").style.display = "none";
+                document.getElementById("next-btn").style.display = "none";
+            }
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>

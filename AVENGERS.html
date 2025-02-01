@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trivia Quiz</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;}
+        .quiz-container { max-width: 500px; margin: auto; padding: 20px; border: 1px solid #080808; background:hsla(39, 82%, 56%, 0.836); border-radius: 10px; }
+        .option { display: block; margin: 10px; padding: 10px; cursor: pointer; background: #ff6003; border-radius: 5px; }
+        .option:hover { background: #0c0c0c; }
+        .correct { background: #68a325 !important; }
+        .wrong { background: #ee0d0d !important; }
+        button:disabled { cursor: not-allowed; }
+    </style>
+</head>
+<body>
+    <video class="video-background" autoplay loop muted>
+        <source src="marvel.mp4" type="video/mp4">
+    </video>
+    <div class="quiz-container">
+        <h2 id="question">Loading...</h2>
+        <div id="options"></div>
+        <input type="text" id="text-answer" style="display: none; margin-top: 10px; padding: 5px;">
+        <button id="next-btn" onclick="nextQuestion()" disabled>Next</button>
+        <p id="score">Score: 0</p>
+    </div>
+    
+    <script>
+        const quizData = [
+            { question: "Who is known as 'God of Thunder'?", options: ["Tony Stark", "Thor", "Hulk", "Loki"], answer: "Thor" },
+            { question: "What infinity stone is embedded in Vision's forehead?", options: ["Time", "Mind", "Soul", "space"], answer: "Mind" },
+            { question: "Which villain is known as the 'Mad Titan'?", options: ["Loki", "Ultron", "Red Skull", "Thanos"], answer: "Thanos" },
+            { question: "Who says, 'I can do this all day'?", options: ["Captain America", "Thor", "Tony Stark", "Falcon"], answer: "Captain America"},
+            { question: "Name the Battle where the Avengers fight Thanos in Endgame ?", options: ["Battle of Wakanda","Battle of Sokovia","Battle of Waterloo","Battle of Earth"], answer:"Battle of Earth"},
+            { question: "What does MJ's nickname stand for in MCU?", options: ["Michelle Jones","Martha Jeffery","Mary Jane","Maria Julia"], answer: "Michelle Jones" },
+            { question: "Which Avenger does Thanos sacrifice to get Soul stone?", options: ["Nebula","Gamora","Wanda","Shuri"], answer: "Gamora" },
+            { question: "Captain America's shield is made of?", options: ["Uranium","Titanium","Vibranium","Adamantium"], answer: "Vibranium" },
+            { question: "How many infinity stones are there", options: ["6","5","8","7"], answer: "6" },
+            { question: "Who is Wanda's brother ?", options: ["Winter Solider","Falcon","Quicksilver","Hawkeye"], answer: "Quicksilver" }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            const quiz = quizData[currentQuestionIndex];
+            document.getElementById("question").innerText = quiz.question;
+            const optionsDiv = document.getElementById("options");
+            optionsDiv.innerHTML = "";
+                quiz.options.forEach(option => {
+                const button = document.createElement("button");
+                button.innerText = option;
+                button.classList.add("option");
+                button.onclick = () => checkAnswer(button, quiz.answer);
+                optionsDiv.appendChild(button);
+            });
+            document.getElementById("next-btn").disabled = true;
+        }
+
+        function checkAnswer(button, correctAnswer) {
+            document.querySelectorAll(".option").forEach(btn => btn.disabled = true);
+            if (button.innerText === correctAnswer) {
+                button.classList.add("correct");
+                score++;
+            } else {
+                button.classList.add("wrong");
+            }
+            document.getElementById("score").innerText = "Score: " + score;
+            document.getElementById("next-btn").disabled = false;
+        }
+
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < quizData.length) {
+                loadQuestion();
+            } else {
+                document.getElementById("question").innerText = "Trivia Over! Final Score: " + score;
+                document.getElementById("options").innerHTML = "";
+                document.getElementById("next-btn").style.display = "none";
+            }
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
